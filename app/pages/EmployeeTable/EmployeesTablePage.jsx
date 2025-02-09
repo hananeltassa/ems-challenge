@@ -1,5 +1,5 @@
 import { useLoaderData, useSearchParams, Form, Link } from "react-router-dom";
-import EmployeeTable from "../components/EmployeeTable";
+import EmployeeTable from "../../components/EmployeeTable";
 
 export default function EmployeesPage() {
   const { employees } = useLoaderData();

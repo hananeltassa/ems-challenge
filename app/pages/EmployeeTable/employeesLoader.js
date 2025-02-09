@@ -1,4 +1,4 @@
-import { getDB } from "../db/getDB";
+import { getDB } from "../../db/getDB";
 
 export async function loader({ request }) {
   const db = await getDB();

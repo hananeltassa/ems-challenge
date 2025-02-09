@@ -1,5 +1,5 @@
-import { loader } from "../../features/employeesLoader";
-import EmployeesPage from "../../features/EmployeesTablePage";
+import { loader } from "../../pages/EmployeeTable/employeesLoader";
+import EmployeesPage from "../../pages/EmployeeTable/EmployeesTablePage";
 
 export { loader };
 export default EmployeesPage;
