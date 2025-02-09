@@ -1,6 +1,6 @@
 import { Form } from "react-router-dom";
 
-export default function NewEmployeePage() {
+export default function NewEmployeeForm() {
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-gray-900 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold text-white text-center">Create New Employee</h1>
@@ -26,7 +26,6 @@ export default function NewEmployeePage() {
         </button>
       </Form>
 
-      {/* Navigation Links */}
       <ul className="mt-6 flex justify-between text-blue-400">
         <li><a href="/employees" className="hover:underline">⬅ Back to Employees</a></li>
         <li><a href="/timesheets" className="hover:underline">📅 View Timesheets</a></li>

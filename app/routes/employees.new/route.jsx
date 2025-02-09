@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
-import { addEmployee } from "./employeeService";
-import NewEmployeePage from "./NewEmployeePage";
+import { addEmployee } from "../../services/addEmployee";
+import NewEmployeeForm from "../../features/NewEmployeeForm";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -12,4 +12,4 @@ export async function action({ request }) {
   return redirect("/employees");
 }
 
-export default NewEmployeePage;
+export default NewEmployeeForm;

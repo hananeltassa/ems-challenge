@@ -1,4 +1,4 @@
-import { getDB } from "../../db/getDB";
+import { getDB } from "../db/getDB";
 import { redirect } from "react-router-dom";
 
 export async function loader({ params }) {

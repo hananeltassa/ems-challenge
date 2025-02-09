@@ -1,11 +1,11 @@
-import { getDB } from "../../db/getDB";
+import { getDB } from "../db/getDB";
 
 export async function loader({ request }) {
   const db = await getDB();
   const url = new URL(request.url);
 
   const search = url.searchParams.get("search")?.toLowerCase() || "";
-  const sort = url.searchParams.get("sort") || "id";
+  const sort = url.searchParams.get("sort") || "full_name";
 
   let query = `SELECT id, full_name, email, job_title, department FROM employees`;
   let params = [];
@@ -15,8 +15,17 @@ export async function loader({ request }) {
     params = [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`];
   }
 
-  query += ` ORDER BY ${sort} ASC`;
-  const employees = await db.all(query, params);
 
+  const allowedSortFields = ["id", "full_name", "email", "job_title", "department"];
+  if (!allowedSortFields.includes(sort)) {
+    console.warn("🚨 Invalid sort field detected:", sort);
+  }
+
+  query += ` ORDER BY ${sort} COLLATE NOCASE ASC`;
+
+  //console.log("Backend: Final SQL Query:", query);
+  //console.log("Backend: Query Parameters:", params);
+
+  const employees = await db.all(query, params);
   return { employees, search, sort };
 }

@@ -1,4 +1,4 @@
-import { getDB } from "../../db/getDB";
+import { getDB } from "../db/getDB";
 
 export async function addEmployee(employeeData) {
   const { full_name, email, phone, date_of_birth, job_title, department, salary, start_date } = employeeData;
