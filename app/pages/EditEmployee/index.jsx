@@ -5,9 +5,9 @@ export default function EmployeePage() {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-gray-900 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold">Edit Employee</h1>
+      <h1 className="text-2xl font-bold text-white">Edit Employee</h1>
 
-      <Form method="post" className="mt-4 flex flex-col gap-4">
+      <Form method="post" encType="multipart/form-data" className="mt-4 flex flex-col gap-4">
         <label>Full Name:</label>
         <input type="text" name="full_name" defaultValue={employee.full_name} required className="px-4 py-2 rounded-md bg-gray-800 text-white" />
 
@@ -25,6 +25,16 @@ export default function EmployeePage() {
 
         <label>Salary:</label>
         <input type="number" name="salary" defaultValue={employee.salary} required className="px-4 py-2 rounded-md bg-gray-800 text-white" />
+
+        <label>Upload Employee Photo:</label>
+        <input type="file" name="photo" accept="image/*" className="px-4 py-2 rounded-md bg-gray-800 text-white" />
+
+        {employee.photo && (
+          <div className="mt-2">
+            <p className="text-white">Current Photo:</p>
+            <img src={employee.photo} alt="Employee" className="w-32 h-32 rounded-md" />
+          </div>
+        )}
 
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
           Update Employee
