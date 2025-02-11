@@ -9,3 +9,9 @@ export async function getTimesheets() {
      JOIN employees ON timesheets.employee_id = employees.id`
   );
 }
+
+
+export async function getEmployees() {
+  const db = await getDB();
+  return await db.all("SELECT id, full_name FROM employees");
+}
