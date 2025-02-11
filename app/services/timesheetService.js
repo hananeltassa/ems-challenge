@@ -28,3 +28,11 @@ export async function createTimesheet(formData) {
     [employee_id, start_time, end_time, summary]
   );
 }
+
+export async function updateTimesheet(timesheetId, { start_time, end_time, employee_id, summary }) {
+  const db = await getDB();
+  await db.run(
+    "UPDATE timesheets SET start_time = ?, end_time = ?, employee_id = ?, summary = ? WHERE id = ?",
+    [start_time, end_time, employee_id, summary, timesheetId]
+  );
+}
