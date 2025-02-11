@@ -15,3 +15,16 @@ export async function getEmployees() {
   const db = await getDB();
   return await db.all("SELECT id, full_name FROM employees");
 }
+
+export async function createTimesheet(formData) {
+  const db = await getDB();
+  const employee_id = formData.get("employee_id");
+  const start_time = formData.get("start_time");
+  const end_time = formData.get("end_time");
+  const summary = formData.get("summary") || null;
+
+  await db.run(
+    "INSERT INTO timesheets (employee_id, start_time, end_time, summary) VALUES (?, ?, ?, ?)",
+    [employee_id, start_time, end_time, summary]
+  );
+}
