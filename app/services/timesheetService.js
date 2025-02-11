@@ -36,3 +36,15 @@ export async function updateTimesheet(timesheetId, { start_time, end_time, emplo
     [start_time, end_time, employee_id, summary, timesheetId]
   );
 }
+
+export async function getTimesheetById(timesheetId) {
+  const db = await getDB();
+  return await db.get(
+    `SELECT timesheets.id, timesheets.start_time, timesheets.end_time, 
+            timesheets.summary, employees.full_name AS employeeName, employees.id AS employeeId 
+     FROM timesheets 
+     JOIN employees ON timesheets.employee_id = employees.id 
+     WHERE timesheets.id = ?`,
+    [timesheetId]
+  );
+}
