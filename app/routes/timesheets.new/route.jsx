@@ -1,6 +1,6 @@
 import { getEmployees, createTimesheet } from "../../services/timesheetService";
 import TimesheetForm from "../../pages/Timesheets/TimesheetForm";
-import { useLoaderData, redirect } from "react-router-dom";
+import { useLoaderData, redirect, useActionData } from "react-router-dom";
 
 export async function loader() {
   const employees = await getEmployees();
@@ -15,7 +15,7 @@ export async function action({ request }) {
   const summary = formData.get("summary") || null;
 
   if (start_time >= end_time) {
-    return new Response("End time must be after start time.", { status: 400 });
+    return { error: "End time must be after start time." };
   }
 
   await createTimesheet(formData);
@@ -24,5 +24,7 @@ export async function action({ request }) {
 
 export default function NewTimesheetPage() {
   const { employees } = useLoaderData();
-  return <TimesheetForm employees={employees} isNew={true} />;
+  const actionData = useActionData();
+
+  return <TimesheetForm employees={employees} isNew={true} error={actionData?.error} />;
 }

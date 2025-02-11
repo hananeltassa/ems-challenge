@@ -1,11 +1,13 @@
 import { Form } from "react-router-dom";
 
-export default function TimesheetForm({ employees, isNew }) {
+export default function TimesheetForm({ employees, isNew , error}) {
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-gray-900 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold text-white text-center">
         {isNew ? "Create New Timesheet" : "Edit Timesheet"}
       </h1>
+
+      {error && <p className="text-red-500 text-center font-bold">{error}</p>}
 
       <Form method="post" className="mt-4 flex flex-col gap-4">
         
