@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function DataTable({ columns, data, rowType }) {
+export default function DataTable({ columns, data, rowType, totalPages, currentPage, onPageChange }) {
   return (
     <div className="overflow-x-auto mt-6">
       <table className="w-full bg-gray-800 text-white rounded-lg">
@@ -37,6 +37,20 @@ export default function DataTable({ columns, data, rowType }) {
           )}
         </tbody>
       </table>
+
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-2 mt-6">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+            <button
+              key={pageNum}
+              onClick={() => onPageChange(pageNum)}
+              className={`px-4 py-2 rounded-md ${currentPage === pageNum ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-300 hover:bg-gray-600"}`}
+            >
+              {pageNum}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

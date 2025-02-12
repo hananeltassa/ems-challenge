@@ -51,19 +51,8 @@ export default function EmployeesPage() {
         </select>
       </div>
 
-      <DataTable columns={columns} data={employees} rowType="employees" />
+      <DataTable columns={columns} data={employees} rowType="employees" totalPages={totalPages} currentPage={page} onPageChange={handlePageChange}/>
 
-      <div className="flex justify-center gap-2 mt-6">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-          <button
-            key={pageNum}
-            onClick={() => handlePageChange(pageNum)}
-            className={`px-4 py-2 rounded-md ${page === pageNum ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-300 hover:bg-gray-600"}`}
-          >
-            {pageNum}
-          </button>
-        ))}
-      </div>
     </div>
   );
 }
