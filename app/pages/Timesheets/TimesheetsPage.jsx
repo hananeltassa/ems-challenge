@@ -1,19 +1,40 @@
 import { useLoaderData, Link } from "react-router-dom";
 import { useState } from "react";
 import DataTable from "../../components/DataTable";
+import { formatToScheduleX } from "../../utils/dateUtils";
+import { useCalendarApp, ScheduleXCalendar } from "@schedule-x/react";
+import {
+  createViewDay,
+  createViewMonthAgenda,
+  createViewMonthGrid,
+  createViewWeek,
+} from "@schedule-x/calendar";
+import { createEventsServicePlugin } from "@schedule-x/events-service";
+
+import "@schedule-x/theme-default/dist/index.css";
 
 export default function TimesheetsPage() {
   const { timesheets } = useLoaderData();
   const [view, setView] = useState("table");
 
-  const columns = [
-    { key: "full_name", label: "Employee" },
-    { key: "start_time", label: "Start Time", render: (value) => new Date(value).toLocaleString() },
-    { key: "end_time", label: "End Time", render: (value) => new Date(value).toLocaleString() },
-  ];
+
+  const calendarEvents = timesheets.map((timesheet) => ({
+    id: timesheet.id.toString(),
+    title: `Timesheet: ${timesheet.full_name}`,
+    start: formatToScheduleX(timesheet.start_time),
+    end: formatToScheduleX(timesheet.end_time),
+  }));
+
+  const eventsService = useState(() => createEventsServicePlugin())[0];
+
+  const calendar = useCalendarApp({
+    views: [createViewDay(), createViewWeek(), createViewMonthGrid(), createViewMonthAgenda()],
+    events: calendarEvents,
+    plugins: [eventsService],
+  });
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-gray-900 rounded-lg shadow-md">
+    <div className="max-w-6xl mx-auto mt-10 p-6 bg-gray-900 rounded-lg shadow-md">
       <h1 className="text-3xl font-bold text-white text-center">Timesheets</h1>
 
       <div className="flex justify-center gap-4 mt-4">
@@ -32,10 +53,22 @@ export default function TimesheetsPage() {
       </div>
 
       {view === "table" ? (
-        <DataTable columns={columns} data={timesheets} rowType="timesheets" />
+        <DataTable
+          columns={[
+            { key: "full_name", label: "Employee" },
+            { key: "start_time", label: "Start Time", render: (value) => formatToScheduleX(value) },
+            { key: "end_time", label: "End Time", render: (value) => formatToScheduleX(value) },
+          ]}
+          data={timesheets}
+          rowType="timesheets"
+        />
       ) : (
-        <div className="mt-6 text-center text-gray-300">
-          <p>To be implemented</p>
+        <div className="mt-6 bg-white p-4 rounded-md shadow-md">
+          {calendarEvents.length > 0 ? (
+            <ScheduleXCalendar calendarApp={calendar} />
+          ) : (
+            <p className="text-gray-700 text-center">No timesheets available.</p>
+          )}
         </div>
       )}
 
