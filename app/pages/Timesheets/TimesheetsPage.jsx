@@ -1,10 +1,16 @@
 import { useLoaderData, Link } from "react-router-dom";
 import { useState } from "react";
-import TimesheetTable from "../../components/TimesheetTable";
+import DataTable from "../../components/DataTable";
 
 export default function TimesheetsPage() {
   const { timesheets } = useLoaderData();
   const [view, setView] = useState("table");
+
+  const columns = [
+    { key: "full_name", label: "Employee" },
+    { key: "start_time", label: "Start Time", render: (value) => new Date(value).toLocaleString() },
+    { key: "end_time", label: "End Time", render: (value) => new Date(value).toLocaleString() },
+  ];
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-gray-900 rounded-lg shadow-md">
@@ -26,7 +32,7 @@ export default function TimesheetsPage() {
       </div>
 
       {view === "table" ? (
-        <TimesheetTable timesheets={timesheets} />
+        <DataTable columns={columns} data={timesheets} rowType="timesheets" />
       ) : (
         <div className="mt-6 text-center text-gray-300">
           <p>To be implemented</p>
