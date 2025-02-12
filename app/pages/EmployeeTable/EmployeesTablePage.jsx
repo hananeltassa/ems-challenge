@@ -1,17 +1,20 @@
 import { useLoaderData, useSearchParams, Link } from "react-router-dom";
 import DataTable from "../../components/DataTable";
 import SearchBar from "../../components/SearchBar";
-import SortButtons from "../../components/SortButtons";
 
 export default function EmployeesPage() {
-  const { employees } = useLoaderData();
+  const { employees, totalPages } = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const search = searchParams.get("search") || "";
   const sort = searchParams.get("sort") || "full_name";
+  const department = searchParams.get("department") || "";
+  const page = Number(searchParams.get("page")) || 1;
 
-  const handleSearch = (query) => setSearchParams({ search: query, sort });
-  const handleSort = (sortKey) => setSearchParams({ search, sort: sortKey });
+  const handleSearch = (query) => setSearchParams({ search: query, sort, department, page: 1 });
+  const handleSort = (sortKey) => setSearchParams({ search, sort: sortKey, department, page });
+  const handleFilter = (department) => setSearchParams({ search, sort, department, page: 1 });
+  const handlePageChange = (newPage) => setSearchParams({ search, sort, department, page: newPage });
 
   const columns = [
     { key: "id", label: "ID" },
@@ -32,9 +35,35 @@ export default function EmployeesPage() {
       </div>
 
       <SearchBar placeholder="Search employees..." defaultValue={search} onSearch={handleSearch} />
-      <SortButtons sortOptions={["full_name", "job_title", "department"]} activeSort={sort} onSort={handleSort} />
+
+      <div className="flex gap-4 mt-4">
+        <select value={sort} onChange={(e) => handleSort(e.target.value)} className="px-3 py-2 rounded-md bg-gray-700 text-white">
+          <option value="full_name">Sort by Full Name</option>
+          <option value="job_title">Sort by Job Title</option>
+          <option value="department">Sort by Department</option>
+        </select>
+
+        <select value={department} onChange={(e) => handleFilter(e.target.value)} className="px-3 py-2 rounded-md bg-gray-700 text-white">
+          <option value="">All Departments</option>
+          <option value="HR">HR</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Sales">Sales</option>
+        </select>
+      </div>
 
       <DataTable columns={columns} data={employees} rowType="employees" />
+
+      <div className="flex justify-center gap-2 mt-6">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+          <button
+            key={pageNum}
+            onClick={() => handlePageChange(pageNum)}
+            className={`px-4 py-2 rounded-md ${page === pageNum ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-300 hover:bg-gray-600"}`}
+          >
+            {pageNum}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
