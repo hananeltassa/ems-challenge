@@ -14,6 +14,14 @@ export async function loader({ params }) {
 
 export async function action({ request, params }) {
   const formData = await request.formData();
+
+  const startDate = formData.get("start_date");
+  const endDate = formData.get("end_date");
+
+  if (endDate && new Date(endDate) <= new Date(startDate)) {
+    return new Response("End Date must be after Start Date", { status: 400 });
+  }
+
   await updateEmployee(params.employeeId, formData);
   return redirect(`/employees`);
 }

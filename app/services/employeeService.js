@@ -19,35 +19,57 @@ export async function getEmployeeById(employeeId) {
 
 export async function updateEmployee(employeeId, formData) {
   const db = await getDB();
-  const updatedEmployee = {
-    full_name: formData.get("full_name"),
-    email: formData.get("email"),
-    phone: formData.get("phone"),
-    job_title: formData.get("job_title"),
-    department: formData.get("department"),
-    salary: formData.get("salary"),
-  };
 
+  const full_name = formData.get("full_name");
+  const email = formData.get("email");
+  const phone = formData.get("phone");
+  const job_title = formData.get("job_title");
+  const department = formData.get("department");
+  const salary = parseInt(formData.get("salary"), 10);
+  const start_date = formData.get("start_date");
+  const end_date = formData.get("end_date");
+
+  if (salary < 30000) {
+    throw new Error("Salary must be at least 30,000.");
+  }
+
+  if (end_date && new Date(end_date) <= new Date(start_date)) {
+    throw new Error("End Date must be after Start Date.");
+  }
+
+  let photoPath = null;
   const photoFile = formData.get("photo");
+
   if (photoFile && photoFile.size > 0) {
-    const photoPath = path.join(UPLOADS_DIR, `${employeeId}_photo${path.extname(photoFile.name)}`);
-    fs.writeFileSync(photoPath, Buffer.from(await photoFile.arrayBuffer()));
-    updatedEmployee.photo = `/uploads/${path.basename(photoPath)}`;
+    const photoFileName = `${employeeId}_photo${path.extname(photoFile.name)}`;
+    const fullPhotoPath = path.join(UPLOADS_DIR, photoFileName);
+    
+    fs.writeFileSync(fullPhotoPath, Buffer.from(await photoFile.arrayBuffer()));
+
+    photoPath = `/uploads/${photoFileName}`;
   }
 
   await db.run(
-    `UPDATE employees SET full_name = ?, email = ?, phone = ?, job_title = ?, department = ?, salary = ?, photo = ? WHERE id = ?`,
+    `UPDATE employees 
+     SET full_name = ?, email = ?, phone = ?, job_title = ?, department = ?, salary = ?, start_date = ?, end_date = ?, photo = COALESCE(?, photo) 
+     WHERE id = ?`,
     [
-      updatedEmployee.full_name,
-      updatedEmployee.email,
-      updatedEmployee.phone,
-      updatedEmployee.job_title,
-      updatedEmployee.department,
-      updatedEmployee.salary,
-      updatedEmployee.photo || null,
+      full_name, email, phone, job_title, department, salary, start_date, end_date || null, 
+      photoPath,
       employeeId
     ]
   );
 
-  return updatedEmployee;
+  return {
+    id: employeeId,
+    full_name,
+    email,
+    phone,
+    job_title,
+    department,
+    salary,
+    start_date,
+    end_date,
+    photo: photoPath || (await getEmployeeById(employeeId)).photo
+  };
 }
