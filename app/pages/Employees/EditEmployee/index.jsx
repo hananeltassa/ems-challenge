@@ -8,15 +8,14 @@ export default function EmployeePage() {
       <h1 className="text-3xl font-semibold text-center text-white mb-6">Edit Employee</h1>
 
       <Form method="post" encType="multipart/form-data" className="flex flex-col gap-6">
-        <div>
+
         {employee.photo && (
-            <div className="mt-4 flex flex-col items-center">
-              <img src={employee.photo} alt="Employee" 
-                className="w-32 h-32 rounded-full shadow-md border-2 border-gray-700" />
-            </div>
-          )}
-        </div>
-        
+          <div className="mt-4 flex flex-col items-center">
+            <img src={employee.photo} alt="Employee" 
+              className="w-32 h-32 rounded-full shadow-md border-2 border-gray-700" />
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="text-white">Full Name:</label>
@@ -29,6 +28,15 @@ export default function EmployeePage() {
             <input type="email" name="email" defaultValue={employee.email} required 
               className="w-full px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-700 focus:ring focus:ring-blue-500" />
           </div>
+        </div>
+
+        <div>
+          <label className="text-white">Date of Birth:</label>
+          <input 
+            type="date" name="date_of_birth" defaultValue={employee.date_of_birth} required 
+            max={new Date().toISOString().split("T")[0]}
+            className="w-full px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-700 focus:ring focus:ring-blue-500"
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -83,7 +91,6 @@ export default function EmployeePage() {
           Update Employee
         </button>
       </Form>
-
 
       <div className="mt-6 flex flex-wrap justify-between text-blue-400 text-sm">
         <a href="/employees" className="hover:underline flex items-center">⬅ Back to Employees</a>
