@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
 import { getEmployeeById, updateEmployee } from "../../services/employeeService";
-import EmployeePage from "../../pages/EditEmployee";
+import EmployeePage from "../../pages/Employees/EditEmployee";
 
 export async function loader({ params }) {
   const employee = await getEmployeeById(params.employeeId);

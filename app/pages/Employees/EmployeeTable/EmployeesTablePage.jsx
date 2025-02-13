@@ -1,6 +1,6 @@
 import { useLoaderData, useSearchParams, Link } from "react-router-dom";
-import DataTable from "../../components/DataTable";
-import SearchBar from "../../components/SearchBar";
+import DataTable from "../../../components/DataTable";
+import SearchBar from "../../../components/SearchBar";
 
 export default function EmployeesPage() {
   const { employees, totalPages } = useLoaderData();
@@ -33,15 +33,19 @@ export default function EmployeesPage() {
           ➕ Create New Employee
         </Link>
       </div>
-
+      <div className="flex justify-end mt-4">
+        <Link href="/timesheets/" className="bg-green-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">📅 View Timesheets</Link>
+      </div>
       <SearchBar placeholder="Search employees..." defaultValue={search} onSearch={handleSearch} />
 
       <div className="flex gap-4 mt-4">
         <select value={sort} onChange={(e) => handleSort(e.target.value)} className="px-3 py-2 rounded-md bg-gray-700 text-white">
+          <option value="id">Sort by ID</option>
           <option value="full_name">Sort by Full Name</option>
           <option value="job_title">Sort by Job Title</option>
           <option value="department">Sort by Department</option>
         </select>
+
 
         <select value={department} onChange={(e) => handleFilter(e.target.value)} className="px-3 py-2 rounded-md bg-gray-700 text-white">
           <option value="">All Departments</option>

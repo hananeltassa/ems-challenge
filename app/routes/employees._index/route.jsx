@@ -1,4 +1,4 @@
-import EmployeesPage from "../../pages/EmployeeTable/EmployeesTablePage";
+import EmployeesPage from "../../pages/Employees/EmployeeTable/EmployeesTablePage";
 import { getDB } from "../../db/getDB";
 
 export async function loader({ request }) {
