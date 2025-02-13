@@ -34,7 +34,9 @@ export default function EmployeesPage() {
         </Link>
       </div>
       <div className="flex justify-end mt-4">
-        <Link href="/timesheets/" className="bg-green-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">📅 View Timesheets</Link>
+        <Link to="/timesheets/" className="bg-green-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
+          📅 View Timesheets
+        </Link>
       </div>
       <SearchBar placeholder="Search employees..." defaultValue={search} onSearch={handleSearch} />
 
